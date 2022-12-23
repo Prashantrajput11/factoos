@@ -1,0 +1,43 @@
+.ctaContainer{
+  display: flex;
+  align-items: center;
+}
+
+
+
+.display_flex {
+  display: flex;
+}
+
+.justify_center{
+  justify-content: center;
+}
+
+.a_i_center{
+  align-items: center;
+}
+
+.containerSmall{
+  display: flex;
+  align-items: center;
+
+  height: 32px;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+.containerMedium{
+  display: flex;
+  align-items: center;
+
+
+  height: 48;
+  padding: 12px 14px;
+  border-radius: 4px;
+}
+.containerLarge{
+  display: flex;
+  align-items: center;
+  height: 62px;
+  padding: 8px 15px;
+  border-radius: 6px;
+}

@@ -41,3 +41,45 @@
   padding: 8px 15px;
   border-radius: 6px;
 }
+
+.dropdown-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border: 2px solid black;
+  border-radius: 4px;
+  height: 40px;
+  margin-bottom: 24px;
+  width: 450px;
+}
+.dropdown-menu{
+  border: 2px solid white;
+  border-radius: 8px;
+  height: '100%';
+  width: 450px;
+}
+.dropdown-item{
+  padding: 8px;
+}
+.dropdown-item:hover{
+  background-color: #9f9d9d
+}
+
+.form-container{
+  background-color: #9f9d9d;
+  /* height: 80px; */
+  width: 80%;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  padding: 24px;
+}
+
+input[type='text']{
+  border-radius: 8px;
+  padding: 10px 16px;
+  width: 244px;
+  outline : none;
+}

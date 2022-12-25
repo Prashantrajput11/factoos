@@ -11,6 +11,7 @@ export default function SolidCta(props) {
       return (
         <div style={{marginRight: '8px'}}>
           <Icon
+
             source = {props.leftIcon}
             height = {20}
             width = {20}
@@ -57,6 +58,7 @@ export default function SolidCta(props) {
   return (
     <div 
       style={getCtaBackgroundColor(props)}
+      onClick = {props.onClick}
       className = {getCtaSize(props)}>
         {getLeftIcon(props)}
         {props.text}

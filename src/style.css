@@ -18,3 +18,18 @@
   display: flex;
   align-items: center;
 }
+
+.form-container{
+  background-color: #9f9d9d;
+  /* height: 80px; */
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+}
+.input[type='text']{
+  border-radius:  8px;
+}

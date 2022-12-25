@@ -2,8 +2,11 @@ import SolidCta from "./components/solidCta";
 import Icon from "./components/Icon";
 import CustomText from "./components/customText";
 import Container from "./components/container";
+import DropDown from "./components/dropDown";
+import CustomInput from "./components/customInput";
 import logo from "./asset/logo.png"
 import './style.css'
+import { useState } from "react";
 
 const initialFacts = [
   {
@@ -39,7 +42,18 @@ const initialFacts = [
   },
 ];
 
+const options = [
+  {value : "Technology", label :"Technology"},
+  {value : "Health", label :"Health"},
+  {value : "Science", label :"Science"},
+  {value : "Finance", label :"Finance"},
+  {value : "Society", label :"Society"},
+]
+
+
 function App() {
+
+  const[show_form, set_show_form] = useState(false)
   return (
     <div className="factsContainer">
       <div className="factsHeader">
@@ -54,7 +68,10 @@ function App() {
         </div>
 
         <CustomText
-          text = {'TODAY I LEARNED'}
+          text = 
+          {'TODAY I LEARNED'}
+
+
           textColor ={'#ffffff'}
           fontWeight ={'bold'}
           fontSize = {'42px'}
@@ -63,13 +80,41 @@ function App() {
       </div>
 
         <SolidCta
-          text = "share a fact"
+          onClick = {()=>set_show_form(!show_form)}
+          text = {show_form ? 'close' : 'share a fact'}
           type="warning"
           size="small"
           leftIcon = {logo}
         />
 
       </div>
+
+
+      {/* <DropDown
+        placeholder = "Select..."
+        options = {options}
+      /> */}
+
+      {
+        show_form ? 
+          <div className="form-container">
+          <div className="input-container"> 
+            <CustomInput
+              placeholder = 'enter fact..'
+            />
+          </div>
+
+        <SolidCta
+          text = "POST"
+          type="primary"
+          size="small"
+          // leftIcon = {logo}
+        />
+        </div> :
+        null
+      }
+
+
 
       {
         initialFacts.map(function(fact){

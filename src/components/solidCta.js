@@ -56,12 +56,12 @@ export default function SolidCta(props) {
 
 
   return (
-    <div 
+    <button 
       style={getCtaBackgroundColor(props)}
       onClick = {props.onClick}
       className = {getCtaSize(props)}>
         {getLeftIcon(props)}
         {props.text}
-    </div>
+    </button>
   )
 }

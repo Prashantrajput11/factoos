@@ -1,3 +1,5 @@
+import supabase from "./supabase";
+
 import SolidCta from "./components/solidCta";
 import Icon from "./components/Icon";
 import CustomText from "./components/customText";
@@ -6,7 +8,9 @@ import DropDown from "./components/dropDown";
 import CustomInput from "./components/customInput";
 import logo from "./asset/logo.png"
 import './style.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Loader from "./components/loader";
+import Tag from "./components/tag";
 
 const initialFacts = [
   {
@@ -43,35 +47,135 @@ const initialFacts = [
 ];
 
 const options = [
-  {value : "Technology", label :"Technology"},
-  {value : "Health", label :"Health"},
-  {value : "Science", label :"Science"},
-  {value : "Finance", label :"Finance"},
-  {value : "Society", label :"Society"},
+  {value : "Technology", label :"random", type: "primary"},
+  {value : "Health", label :"Health", type: "info"},
+  {value : "Science", label :"Science", type: "warning"},
+  {value : "Finance", label :"Finance",type: "danger" },
+  {value : "Society", label :"Society", type: "primary"},
 ]
+const tags_color = ['#16a34a', '#eab308', '#f97316']
 
 
 function App() {
 
+  // Initialise states
   const[show_form, set_show_form] = useState(false)
+  const[fact, setFact] = useState([])
+  const[is_loading, set_is_loading] = useState(false)
+  const[is_error, set_is_error] = useState('')
+  const[current_category, set_current_category] = useState('all')
+
+
+  // fetch data frbom database
+  useEffect(()=>{
+    async function getfacts(){
+      set_is_loading(true)
+      // get data from supabase facts list  
+
+      // get all facts from database
+      let query = supabase.from('facts').select('*');
+
+      // check if cuurent category is not all
+      if(current_category !== 'all'){
+        query = query.eq('category', current_category)
+      }
+
+      // destructure 
+      let { data: facts,  error } = await query
+        .order('text', {ascending: true})
+        console.log('error',error);
+        if(!error) setFact(facts) 
+ 
+        set_is_loading(false)
+
+    }
+    // call 
+    getfacts()
+  }, [current_category])
+
+
+  function renderFactForm(){
+    if(show_form){
+      return (
+        <CustomInput
+          placeholder = 'enter fact..'
+          fact = {fact}
+          setFact= {setFact}
+          showForm = {show_form}
+          setShowForm = {set_show_form}
+        />
+      )
+
+    }
+    else{
+      return null;
+    }
+
+  }
+
+
+  function renderFactList(){
+    return fact.map(function(f){
+      console.log('facts', f);
+        return (
+          <div style={{marginBottom: '20px'}}>
+            <Container
+              backgroundColor= '#44403c'
+              // height= '92px'
+              // width = "300px"
+              borderRadius = '8px'
+            >
+              <div 
+                style={{
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between', 
+                  padding: '0 24px', 
+                  // width: '344px'
+                }}
+              >
+                <div style={{width: '100%'}}>
+                  <CustomText
+                  // f.category === 
+                    text = {f.text}
+                    textColor ={'#ffffff'}
+                    fontWeight ={'regular'}
+                    fontSize = {'20px'}
+                    fontFamily = {'sono'}
+                  />
+                </div>
+
+                <Tag
+                  text = {f.category}
+                  backgroundColor = {
+                    f.color
+                  }
+                  // backgroundColor = {'red'}
+                />
+              </div>
+            </Container>
+          </div>
+        )
+    })
+  }
+
+
   return (
+   
     <div className="factsContainer">
       <div className="factsHeader">
  
       <div className="factsHeaderLeftContent">
         <div style={{marginRight: '16px'}}>
-        <Icon
-          source = {logo}
-          height = {68}
-          width = {68}
-        />
+          <Icon
+            source = {logo}
+            height = {68}
+            width = {68}
+          />
         </div>
 
         <CustomText
-          text = 
-          {'TODAY I LEARNED'}
-
-
+          text = {'TODAY I LEARNED'}
           textColor ={'#ffffff'}
           fontWeight ={'bold'}
           fontSize = {'42px'}
@@ -79,13 +183,13 @@ function App() {
         />
       </div>
 
-        <SolidCta
-          onClick = {()=>set_show_form(!show_form)}
-          text = {show_form ? 'close' : 'share a fact'}
-          type="warning"
-          size="small"
-          leftIcon = {logo}
-        />
+      <SolidCta
+        onClick = {()=>set_show_form(!show_form)}
+        text = {show_form ? 'close' : 'share a fact'}
+        type="warning"
+        size="small"
+        leftIcon = {logo}
+      />
 
       </div>
 
@@ -95,52 +199,33 @@ function App() {
         options = {options}
       /> */}
 
-      {
-        show_form ? 
-          <div className="form-container">
-          <div className="input-container"> 
-            <CustomInput
-              placeholder = 'enter fact..'
-            />
-          </div>
+      {renderFactForm()}
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <div style={{display: 'flex', flexDirection: 'column', height: '600px', alignItems: 'center'}}>
 
-        <SolidCta
-          text = "POST"
-          type="primary"
-          size="small"
-          // leftIcon = {logo}
-        />
-        </div> :
-        null
-      }
-
-
-
-      {
-        initialFacts.map(function(fact){
-          return (
-            <div style={{marginBottom: '20px'}}>
-              <Container
-                backgroundColor= '#44403c'
-                height= '92px'
-                // width = "300px"
-                borderRadius = '8px'
-              >
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px'}}>
-                  <CustomText
-                    text = {fact.text}
-                    textColor ={'#ffffff'}
-                    fontWeight ={'regular'}
-                    fontSize = {'20px'}
-                    fontFamily = {'sono'}
+          {
+            options.map(option => {
+              return (
+                <div style={{marginBottom: '50px', alignItems: 'center'}}>
+                  <SolidCta
+                    onClick = {()=>set_current_category(option.label)}
+                    text = {option.label}
+                    type= {option.type}
+                    size={'medium'}
                   />
                 </div>
-              </Container>
-            </div>
-          )
-        })
-      }
+              )
+            })
+          }
+ 
+        </div>
+      <div style={{display: 'flex', flexDirection: 'column', marginLeft: '24px'}}>
+
+       { is_loading?  <Loader/> : renderFactList()}
+        </div>
+      </div>
     </div>
+
   );
 }
 

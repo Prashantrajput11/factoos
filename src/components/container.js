@@ -8,7 +8,7 @@ export default function Container(props) {
       style= {{
         backgroundColor: props.backgroundColor,
         height: props.height, 
-        width: props.width,
+        width:  '1200px',
         borderRadius : props.borderRadius ? props.borderRadius : 0
       }}
     
